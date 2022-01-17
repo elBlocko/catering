@@ -26,8 +26,8 @@ public class UEssen extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public UEssen() {
-		setTitle("Essen");
 		setMaximizable(true);
+		setTitle("Essen");
 		setIconifiable(true);
 		setClosable(true);
 		setBounds(100, 100, 450, 300);

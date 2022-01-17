@@ -3,10 +3,8 @@ package userinterface;
 import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
-public class UKunden extends JInternalFrame {
+public class UMonat extends JInternalFrame {
 
 	/**
 	 * Launch the application.
@@ -15,7 +13,7 @@ public class UKunden extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UKunden frame = new UKunden();
+					UMonat frame = new UMonat();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,18 +25,11 @@ public class UKunden extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public UKunden() {
-		addInternalFrameListener(new InternalFrameAdapter() {
-			@Override
-			public void internalFrameOpened(InternalFrameEvent e) {
-				
-			}
-		});
-		setResizable(true);
-		setTitle("Kunden");
-		setClosable(true);
+	public UMonat() {
+		setTitle("Monats\u00FCbersicht");
 		setMaximizable(true);
 		setIconifiable(true);
+		setClosable(true);
 		setBounds(100, 100, 450, 300);
 
 	}
