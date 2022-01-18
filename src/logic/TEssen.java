@@ -68,7 +68,7 @@ public class TEssen {
 	 */
 	
 	public int save(String Bezeichnung, String Kategorie, float Preis) {
-		String sql = "insert into tblKunden (Firma1,Firma2,Strasse,PLZ,Ort) values ('" + Bezeichnung + "','" + Kategorie
+		String sql = "insert into tblEssen (Bezeichnung,Kategorie,Preis) values ('" + Bezeichnung + "','" + Kategorie
 				+ "',"+ Preis + ");";
 		int EssenNr = -1;
 		try {
