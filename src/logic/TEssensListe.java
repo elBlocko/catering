@@ -38,7 +38,7 @@ public class TEssensListe  extends ArrayList<TEssen>{
 				tempPreis = rs.getFloat("Preis"); 
 	
 				
-				tempEssenNr = rs.getInt("KuNr");
+				tempEssenNr = rs.getInt("EssenNr");
 
 				tempEssen = new TEssen(tempEssenNr, tempBezeichnung,tempKategorie,tempPreis); // Objekt erstellen
 				this.add(tempEssen); // objekt der Liste zufügen
@@ -63,20 +63,6 @@ public class TEssensListe  extends ArrayList<TEssen>{
 		}
 	}
 
-	public int save(String Bezeichnung, String Kategorie, float Preis) {
-		String sql = "insert into tblKunden (Firma1,Firma2,Strasse,PLZ,Ort) values ('" + Bezeichnung + "','" + Kategorie
-				+ "',"+ Preis + ");";
-		int PKid = -1;
-		try {
-			Statement stmt = TDatabase.connection.createStatement();
-			// execute the insert statement
-			stmt.executeUpdate(sql);
-			PKid = stmt.getGeneratedKeys().getInt(1);
-			stmt.close();
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Fehler beim speichern der Daten in der Essens Tabelle");
-		}
-		return PKid;
-	}
+	
 
 }

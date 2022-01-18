@@ -67,5 +67,19 @@ public class TEssen {
 	 * METHODEN
 	 */
 	
-	
+	public int save(String Bezeichnung, String Kategorie, float Preis) {
+		String sql = "insert into tblKunden (Firma1,Firma2,Strasse,PLZ,Ort) values ('" + Bezeichnung + "','" + Kategorie
+				+ "',"+ Preis + ");";
+		int EssenNr = -1;
+		try {
+			Statement stmt = TDatabase.connection.createStatement();
+			// execute the insert statement
+			stmt.executeUpdate(sql);
+			EssenNr = stmt.getGeneratedKeys().getInt(1);
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Fehler beim speichern der Daten in der Essens Tabelle");
+		}
+		return EssenNr;
+	}
 }

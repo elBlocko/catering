@@ -218,7 +218,7 @@ public class UMain extends JFrame {
 
 	private void openEssenForm() {
 		desktopPane1.removeAll();
-		essenForm1 = new UEssen();
+		essenForm1 = new UEssen(EssenListe1);
 		essenForm1.setBounds(0, 0, desktopPane1.getWidth(), desktopPane1.getHeight());
 		desktopPane1.add(essenForm1);
 		essenForm1.setVisible(true);
