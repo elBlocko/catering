@@ -24,10 +24,10 @@ public class TKunde {
 	public TKunde(int AID, String AFirma1, String AFirma2, String AStrasse, String APLZ, String AOrt) {
 		this.FID = AID;
 		this.FFirma1 = AFirma1;
-		this.FFirma1 = AFirma2;
-		this.FFirma1 = AStrasse;
-		this.FFirma1 = APLZ;
-		this.FFirma1 = AOrt;
+		this.FFirma2 = AFirma2;
+		this.FStrasse = AStrasse;
+		this.FPLZ = APLZ;
+		this.FOrt = AOrt;
 	}
 
 	// ***********************************************************
@@ -85,35 +85,22 @@ public class TKunde {
 		this.FOrt = Ort;
 	}
 
-	/***************************************************************
-	 * METHODEN
-	 */
-	public void delete(int ID) {
-		String sql = "DELETE FROM [tblKunden] WHERE PKid = " + ID + ";";
-		try {
-			Statement stmt = TDatabase.connection.createStatement();
-			// execute the delete statement
-			stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Fehler beim löschen der Daten in der Kunden Tabelle");
-		}
-	}
-
+// METHODEN *******************************************************************************************************
+	
 	public int save(String Firma1, String Firma2, String Strasse, String PLZ, String Ort) {
-		String sql = "insert into tblKunden (Firma1,Firma2,Strasse,PLZ,Ort) values ('" + Firma1 + "','" + Firma2
-				+ "','"+ Strasse + "','" + PLZ + "','" + Ort + "');";
-		int PKid = -1;
+		String sql = "insert into tblKunden (Firma1,Firma2,Strasse,PLZ,Ort) values ('" + Firma1 + "','" + Firma2 + "','"
+				+ Strasse + "','" + PLZ + "','" + Ort + "');";
+		int KuNr = -1;
 		try {
 			Statement stmt = TDatabase.connection.createStatement();
 			// execute the insert statement
 			stmt.executeUpdate(sql);
-			PKid = stmt.getGeneratedKeys().getInt(1);
+			KuNr = stmt.getGeneratedKeys().getInt(1);
 			stmt.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Fehler beim speichern der Daten in der Kunden Tabelle");
 		}
-		return PKid;
+		return KuNr;
 	}
 
 }

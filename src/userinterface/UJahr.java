@@ -26,10 +26,8 @@ public class UJahr extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public UJahr() {
+		setResizable(true);
 		setTitle("Jahres\u00FCbersicht");
-		setIconifiable(true);
-		setMaximizable(true);
-		setClosable(true);
 		setBounds(100, 100, 450, 300);
 
 	}

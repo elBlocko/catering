@@ -26,10 +26,8 @@ public class UEssensbestellung extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public UEssensbestellung() {
+		setResizable(true);
 		setTitle("Essensbestellung");
-		setMaximizable(true);
-		setIconifiable(true);
-		setClosable(true);
 		setBounds(100, 100, 450, 300);
 
 	}

@@ -26,10 +26,8 @@ public class UMonat extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public UMonat() {
+		setResizable(true);
 		setTitle("Monats\u00FCbersicht");
-		setMaximizable(true);
-		setIconifiable(true);
-		setClosable(true);
 		setBounds(100, 100, 450, 300);
 
 	}

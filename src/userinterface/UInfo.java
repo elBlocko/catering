@@ -26,9 +26,7 @@ public class UInfo extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public UInfo() {
-		setMaximizable(true);
-		setIconifiable(true);
-		setClosable(true);
+		setResizable(true);
 		setBounds(100, 100, 450, 300);
 
 	}

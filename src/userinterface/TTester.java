@@ -21,7 +21,7 @@ public class TTester {
 		TKundenListe KundenListe1; // declare
 		KundenListe1 = new TKundenListe(new ArrayList<TKunde>()); // init
 		KundenListe1.setContent(); // fill list
-		System.out.println(KundenListe1.get(0).getFirma1());
+		System.out.println(KundenListe1.get(0).getStrasse());
 	}
 
 }

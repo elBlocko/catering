@@ -50,5 +50,33 @@ public class TEssensListe  extends ArrayList<TEssen>{
 		}
 
 	}
+	
+	public void delete(int ID) {
+		String sql = "DELETE FROM [tblEssen] WHERE EssenNr = " + ID + ";";
+		try {
+			Statement stmt = TDatabase.connection.createStatement();
+			// execute the delete statement
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Fehler beim löschen der Daten in der Essens Tabelle");
+		}
+	}
+
+	public int save(String Bezeichnung, String Kategorie, float Preis) {
+		String sql = "insert into tblKunden (Firma1,Firma2,Strasse,PLZ,Ort) values ('" + Bezeichnung + "','" + Kategorie
+				+ "',"+ Preis + ");";
+		int PKid = -1;
+		try {
+			Statement stmt = TDatabase.connection.createStatement();
+			// execute the insert statement
+			stmt.executeUpdate(sql);
+			PKid = stmt.getGeneratedKeys().getInt(1);
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Fehler beim speichern der Daten in der Essens Tabelle");
+		}
+		return PKid;
+	}
 
 }
