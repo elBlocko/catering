@@ -94,7 +94,7 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 				 }
 				}
 				oKunde = null;
-				for (TKunde tempKunde : TTester.KundenListe1) {
+				for (TKunde tempKunde : UMain.KundenListe1) {
 					if (tempKunde.getID() == tempKuNr) {
 						oKunde = tempKunde;
 						break;

@@ -87,6 +87,7 @@ public class UKunden extends JInternalFrame {
 	 * 
 	 * @param kundenListe12
 	 */
+	@SuppressWarnings("static-access")
 	public UKunden(TKundenListeGlobal kundenListe12) {
 		this.KundenListe1 = kundenListe12;
 		addInternalFrameListener(new InternalFrameAdapter() {

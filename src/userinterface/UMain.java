@@ -226,7 +226,7 @@ public class UMain extends JFrame {
 
 	private void openEssensbestellungForm() {
 		desktopPane1.removeAll();
-		essensBestellungForm1 = new UEssensbestellung();
+		essensBestellungForm1 = new UEssensbestellung(KundenListe1,EssenListe1);
 		essensBestellungForm1.setBounds(0, 0, desktopPane1.getWidth(), desktopPane1.getHeight());
 		desktopPane1.add(essensBestellungForm1);
 		essensBestellungForm1.setVisible(true);

@@ -28,6 +28,8 @@ public class TTester {
 		EssenListe1 = new TEssensListeGlobal(new ArrayList<TEssen>()); // init
 		KundenListe1.setContent(); // fill list
 		EssenListe1.setContent();
+		
+		// ID des Kunden (KuNr)
 		int tempKuNr = KundenListe1.get(0).getID();
 		
 		// gehe die KundenListe durch und suche den kunden mit der tempID
@@ -38,7 +40,7 @@ public class TTester {
 			}
 		}
 		
-		// gib die lokale Essensliste dieses Kunden aus
+		// gib die lokale Essensliste dieses Kunden aus , jeweils Bezeichnung und die Anzahl der Essen
 		for (int i = 0; i < oKunde.getEssen().size();i++) {
 		System.out.println(oKunde.getEssen().get(i).getBezeichnung());
 		System.out.println(oKunde.getEssen().get(i).getAnzahl());
