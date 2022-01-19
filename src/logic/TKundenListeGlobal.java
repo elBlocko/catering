@@ -6,14 +6,15 @@ import javax.swing.JOptionPane;
 import database.TDatabase;
 import java.sql.*;
 
-public class TKundenListe extends ArrayList<TKunde> {
+@SuppressWarnings("serial")
+public class TKundenListeGlobal extends TKundenListeBasis {
 
-	private static final long serialVersionUID = -123456789012345678L;
-	List<TKunde> FKundenListe;
 
-	public TKundenListe(List<TKunde> AKundenListe) {
-		this.FKundenListe = AKundenListe;
+	public TKundenListeGlobal(List<TKunde> AKundenListe) {
+		super(AKundenListe);	
 	}
+
+	
 	// METHODEN ------------------------------------------------------------------
 
 	public void setContent() {

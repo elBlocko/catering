@@ -2,6 +2,7 @@ package logic;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -15,15 +16,24 @@ public class TEssen {
 	private String FBezeichnung;
 	private String FKategorie;
 	private float FPreis;
-
+	private TKundenListeLokal FKundenListeLokal;
+	
+	int FAnzahl;
+	String FDatum;
+	
+	
 	// implement
 	// CONSTRUCTOR
 	// @param to @property --> compile+
-	public TEssen(int AID, String ABezeichnung, String AKategorie, float APreis) {
+	public TEssen(int AID, String ABezeichnung, String AKategorie, float APreis, int AAnzahl, String ADatum) {
 		this.FID = AID;
 		this.FBezeichnung = ABezeichnung;
 		this.FKategorie = AKategorie;
 		this.FPreis = APreis;	
+		this.FAnzahl = AAnzahl;
+		this.FDatum = ADatum;
+		
+		FKundenListeLokal = new TKundenListeLokal(new ArrayList<TKunde>()); // init
 	}
 
 	// ***********************************************************
@@ -62,6 +72,36 @@ public class TEssen {
 	public void setPreis(float Preis) {
 		this.FPreis = Preis;
 	}
+	
+	// LISTE
+	
+	public TKundenListeLokal getKunden() {
+		return FKundenListeLokal;
+	}
+	
+	public void setKunden(TKundenListeLokal KundenListeLokal) {
+		this.FKundenListeLokal = KundenListeLokal;
+	}
+	
+	
+	// PROPERTY READ Anzahl WRITE Anzahl
+	public int getAnzahl() {
+		return FAnzahl;
+	}
+
+	public void setAnzahl(int Anzahl) {
+		this.FAnzahl = Anzahl;
+	}
+	
+	// PROPERTY READ Datum WRITE Datum
+	public String getDatum() {
+		return FDatum;
+	}
+
+	public void setDatum(String Datum) {
+		this.FDatum = Datum;
+	}
+	
 
 	/***************************************************************
 	 * METHODEN

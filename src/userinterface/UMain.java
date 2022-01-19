@@ -46,8 +46,8 @@ public class UMain extends JFrame {
 	private UInfo infoForm1;
 	private UKunden kundenForm1;
 	// LISTEN
-	public TEssensListe EssenListe1;
-	public TKundenListe KundenListe1;
+	public TEssensListeGlobal EssenListe1;
+	public static TKundenListeGlobal KundenListe1;
 
 	/**
 	 * Launch the application.
@@ -286,12 +286,14 @@ public class UMain extends JFrame {
 		database1.connect();
 	}
 	void createLists() {
-		EssenListe1 = new TEssensListe(new ArrayList<TEssen>()); // init
-		KundenListe1 = new TKundenListe(new ArrayList<TKunde>()); // init		
+		KundenListe1 = new TKundenListeGlobal(new ArrayList<TKunde>()); // init		
+		EssenListe1 = new TEssensListeGlobal(new ArrayList<TEssen>()); // init
+		
 	}
 
 	void setListContent() {
+		KundenListe1.setContent(); // fill list	
 		EssenListe1.setContent(); // fill list
-		KundenListe1.setContent(); // fill list		
+			
 	}
 } // end of class

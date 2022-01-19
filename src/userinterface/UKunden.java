@@ -38,7 +38,7 @@ public class UKunden extends JInternalFrame {
 	private JTextField tfSearchbar;
 	private JTable grdMain;
 
-	private static TKundenListe KundenListe1;
+	private static TKundenListeGlobal KundenListe1;
 
 	private int rowIndexGrdMain = -1;
 
@@ -87,7 +87,7 @@ public class UKunden extends JInternalFrame {
 	 * 
 	 * @param kundenListe12
 	 */
-	public UKunden(TKundenListe kundenListe12) {
+	public UKunden(TKundenListeGlobal kundenListe12) {
 		this.KundenListe1 = kundenListe12;
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override

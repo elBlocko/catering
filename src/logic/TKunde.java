@@ -2,6 +2,7 @@ package logic;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -17,7 +18,8 @@ public class TKunde {
 	private String FStrasse;
 	private String FPLZ;
 	private String FOrt;
-
+	private TEssensListeLokal FEssensListeLokal;
+	
 	// implement
 	// CONSTRUCTOR
 	// @param to @property --> compile+
@@ -28,6 +30,7 @@ public class TKunde {
 		this.FStrasse = AStrasse;
 		this.FPLZ = APLZ;
 		this.FOrt = AOrt;
+		FEssensListeLokal = new TEssensListeLokal(new ArrayList<TEssen>()); // Anzahl 0, Datum null aus tblKundenEssen
 	}
 
 	// ***********************************************************
@@ -84,6 +87,15 @@ public class TKunde {
 	public void setOrt(String Ort) {
 		this.FOrt = Ort;
 	}
+	// LISTE
+	public TEssensListeLokal getEssen() {
+		return FEssensListeLokal;
+	}
+	
+	public void setEssen(TEssensListeLokal Essen) {
+		this.FEssensListeLokal = Essen;
+	}
+	
 
 // METHODEN *******************************************************************************************************
 	

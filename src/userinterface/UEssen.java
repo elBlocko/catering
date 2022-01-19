@@ -28,7 +28,7 @@ import java.text.DecimalFormat;
 
 public class UEssen extends JInternalFrame {
 
-	private static TEssensListe EssenListe1;
+	private static TEssensListeGlobal EssenListe1;
 
 	private JTextField tfSearchbar;
 	private JTextField tfBezeichnung;
@@ -68,7 +68,7 @@ public class UEssen extends JInternalFrame {
 	 * 
 	 * @param essenListe1
 	 */
-	public UEssen(TEssensListe essenListe1) {
+	public UEssen(TEssensListeGlobal essenListe1) {
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameOpened(InternalFrameEvent e) {
@@ -234,7 +234,7 @@ public class UEssen extends JInternalFrame {
 				JOptionPane.showMessageDialog(null, "Preis darf nur Zahlen mit Nachkommastellen");
 			}
 
-			TEssen tempEssen = new TEssen(-1, tempBezeichnung, tempKategorie, tempPreis); // Objekt
+			TEssen tempEssen = new TEssen(-1, tempBezeichnung, tempKategorie, tempPreis,0,null); // Objekt
 																							// erstellen
 			int EssenNr = tempEssen.save(tempBezeichnung, tempKategorie, tempPreis); // Objekt in der Datenbank
 																						// speichern
@@ -269,7 +269,7 @@ public class UEssen extends JInternalFrame {
 				rowList[0] = EssenListe1.get(i).getID(); // EssenNr
 				rowList[1] = EssenListe1.get(i).getBezeichnung();
 				rowList[2] = EssenListe1.get(i).getKategorie();
-				rowList[3] = EssenListe1.get(i).getPreis() + " €";
+				rowList[3] = String.format("%.2f",EssenListe1.get(i).getPreis() + " €");
 
 				modelList.addRow(rowList);
 				match = true;

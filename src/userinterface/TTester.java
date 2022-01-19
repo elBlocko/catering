@@ -13,15 +13,37 @@ import javax.swing.JOptionPane;
 import database.TDatabase;
 import logic.*;
 public class TTester {
-
+	public static TKundenListeGlobal KundenListe1; // declare
+	
 	public static void main(String[] args) {
 		TDatabase database1 = TDatabase.getInstance();
 		database1.connect();
 		// create and fill List
-		TKundenListe KundenListe1; // declare
-		KundenListe1 = new TKundenListe(new ArrayList<TKunde>()); // init
+		
+		TEssensListeGlobal EssenListe1;
+		TKunde oKunde;
+		oKunde = null;
+		
+		KundenListe1 = new TKundenListeGlobal(new ArrayList<TKunde>()); // init
+		EssenListe1 = new TEssensListeGlobal(new ArrayList<TEssen>()); // init
 		KundenListe1.setContent(); // fill list
-		System.out.println(KundenListe1.get(0).getStrasse());
+		EssenListe1.setContent();
+		int tempKuNr = KundenListe1.get(0).getID();
+		
+		// gehe die KundenListe durch und suche den kunden mit der tempID
+		for (TKunde tempKunde : KundenListe1) {
+			if (tempKunde.getID() == tempKuNr) {
+				oKunde = tempKunde;
+				break;
+			}
+		}
+		
+		// gib die lokale Essensliste dieses Kunden aus
+		for (int i = 0; i < oKunde.getEssen().size();i++) {
+		System.out.println(oKunde.getEssen().get(i).getBezeichnung());
+		System.out.println(oKunde.getEssen().get(i).getAnzahl());
+		
+		}
 	}
 
 }
