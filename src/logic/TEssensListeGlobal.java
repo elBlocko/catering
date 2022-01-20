@@ -13,7 +13,7 @@ import userinterface.TTester;
 import userinterface.UMain;
 
 @SuppressWarnings("serial")
-public class TEssensListeGlobal  extends TEssensListeBasis{
+public class TEssensListeGlobal extends TEssensListeBasis {
 
 	public TEssensListeGlobal(List<TEssen> AEssensListe) {
 		super(AEssensListe);
@@ -26,22 +26,21 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 		String tempKategorie;
 		float tempPreis;
 		TEssen tempEssen;
-		
-		
+
 		try {
 			Statement stmt = TDatabase.connection.createStatement();
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM [tblEssen];");
 			while (rs.next()) {
 				tempBezeichnung = rs.getString("Bezeichnung"); // Werte holen
-				tempKategorie = rs.getString("Kategorie"); 
-				
-				tempPreis = rs.getFloat("Preis"); 
-	
-				
+				tempKategorie = rs.getString("Kategorie");
+
+				tempPreis = rs.getFloat("Preis");
+
 				tempEssenNr = rs.getInt("EssenNr");
 
-				tempEssen = new TEssen(tempEssenNr, tempBezeichnung,tempKategorie,tempPreis,-1,null,-1); // Objekt erstellen
+				tempEssen = new TEssen(tempEssenNr, tempBezeichnung, tempKategorie, tempPreis, -1, null, -1); // Objekt
+																												// erstellen
 				this.add(tempEssen); // objekt der Liste zufügen
 			}
 			rs.close();
@@ -52,7 +51,7 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 		// hier Zuordnung der Bestellungen ESSEN <--> KUNDEN
 		essenZuKunden();
 	}
-	
+
 	public void delete(int ID) {
 		String sql = "DELETE FROM [tblEssen] WHERE EssenNr = " + ID + ";";
 		try {
@@ -67,18 +66,19 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 
 	// LOKALE LISTEN ZUORDNEN
 	private void essenZuKunden() {
-		
+
 		int tempKundenEssenID;
 		int tempKuNr; // Fremdschlüssel auf PK von tblKunden
 		int tempENr; // FK auf PK von tblEssen
-		int tempAnzahl;		
-		int i =1;
+		int tempAnzahl;
+
 		String tempDatum;
-		
-		
+		int i = 0;
+
 		TEssen oEssen;
+		TEssen oEssenNeu;
 		TKunde oKunde;
-		
+
 		try {
 			Statement stmt = TDatabase.connection.createStatement();
 
@@ -86,16 +86,17 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 			while (rs.next()) {
 				tempKundenEssenID = rs.getInt("PKid");
 				tempKuNr = rs.getInt("KuNr"); // Werte holen
-				tempENr = rs.getInt("ENr"); 
+				tempENr = rs.getInt("ENr");
 				tempAnzahl = rs.getInt("Anzahl");
 				tempDatum = rs.getString("Datum");
-				
+
+				// wenn gleiches Objekt gefunden wird, werden werte überschrieben
 				oEssen = null;
 				for (TEssen tempEssen : this) {
-				 if (tempEssen.getID() == tempENr) {
-					 oEssen = tempEssen;
-					 break;
-				 }
+					if (tempEssen.getID() == tempENr) {
+						oEssen = tempEssen;
+						break;
+					}
 				}
 				oKunde = null;
 				for (TKunde tempKunde : UMain.KundenListe1) {
@@ -104,23 +105,26 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 						break;
 					}
 				}
-				
-				oEssen.setAnzahl(tempAnzahl);
-				oEssen.setDatum(tempDatum);
-				oEssen.setKundenEssenID(tempKundenEssenID);
-				// sobald die ENr erneut vorkommt, werden die Werte Anzahl, Datum und ID des Kunden überschrieben
-				
-				
-				oKunde.getEssen().add(0,oEssen); // getEssen() ist die lokale EssensListe an einem Kunden				
-				((TKundenListeLokal) oEssen.getKunden()).add(0,oKunde);
-				
+
+				oEssenNeu = new TEssen(i, oEssen.getBezeichnung(), oEssen.getKategorie(), oEssen.getPreis(), tempAnzahl,
+						tempDatum, tempKundenEssenID);
+				/*
+				 * oEssen.setID(i); oEssen.setAnzahl(tempAnzahl); oEssen.setDatum(tempDatum);
+				 * oEssen.setKundenEssenID(tempKundenEssenID);
+				 */
+				// sobald die ENr erneut vorkommt, werden die Werte Anzahl, Datum und ID des
+				// Kunden überschrieben
+
+				oKunde.getEssen().add(oEssenNeu); // getEssen() ist die lokale EssensListe an einem Kunden
+				((TKundenListeLokal) oEssen.getKunden()).add(oKunde);
+				i++;
 			}
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Fehler beim Laden der Daten in die lokalen Listen");
-	
-	}
-	
+
+		}
+
 	}
 }
