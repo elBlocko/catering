@@ -234,7 +234,7 @@ public class UEssen extends JInternalFrame {
 				JOptionPane.showMessageDialog(null, "Preis darf nur Zahlen mit Nachkommastellen");
 			}
 
-			TEssen tempEssen = new TEssen(-1, tempBezeichnung, tempKategorie, tempPreis,0,null); // Objekt
+			TEssen tempEssen = new TEssen(-1, tempBezeichnung, tempKategorie, tempPreis,-1,null,-1); // Objekt
 																							// erstellen
 			int EssenNr = tempEssen.save(tempBezeichnung, tempKategorie, tempPreis); // Objekt in der Datenbank
 																						// speichern

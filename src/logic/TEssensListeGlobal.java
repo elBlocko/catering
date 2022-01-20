@@ -27,6 +27,7 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 		float tempPreis;
 		TEssen tempEssen;
 		
+		
 		try {
 			Statement stmt = TDatabase.connection.createStatement();
 
@@ -40,7 +41,7 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 				
 				tempEssenNr = rs.getInt("EssenNr");
 
-				tempEssen = new TEssen(tempEssenNr, tempBezeichnung,tempKategorie,tempPreis,0,null); // Objekt erstellen
+				tempEssen = new TEssen(tempEssenNr, tempBezeichnung,tempKategorie,tempPreis,-1,null,-1); // Objekt erstellen
 				this.add(tempEssen); // objekt der Liste zufügen
 			}
 			rs.close();
@@ -67,9 +68,11 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 	// LOKALE LISTEN ZUORDNEN
 	private void essenZuKunden() {
 		
+		int tempKundenEssenID;
 		int tempKuNr; // Fremdschlüssel auf PK von tblKunden
 		int tempENr; // FK auf PK von tblEssen
 		int tempAnzahl;		
+		int i =1;
 		String tempDatum;
 		
 		
@@ -81,6 +84,7 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM [tblKundenEssen];");
 			while (rs.next()) {
+				tempKundenEssenID = rs.getInt("PKid");
 				tempKuNr = rs.getInt("KuNr"); // Werte holen
 				tempENr = rs.getInt("ENr"); 
 				tempAnzahl = rs.getInt("Anzahl");
@@ -101,11 +105,14 @@ public class TEssensListeGlobal  extends TEssensListeBasis{
 					}
 				}
 				
-				oKunde.getEssen().add(oEssen); // getEssen() ist die lokale EssensListe an einem Kunden
 				oEssen.setAnzahl(tempAnzahl);
 				oEssen.setDatum(tempDatum);
+				oEssen.setKundenEssenID(tempKundenEssenID);
+				// sobald die ENr erneut vorkommt, werden die Werte Anzahl, Datum und ID des Kunden überschrieben
 				
-				oEssen.getKunden().add(oKunde);
+				
+				oKunde.getEssen().add(0,oEssen); // getEssen() ist die lokale EssensListe an einem Kunden				
+				((TKundenListeLokal) oEssen.getKunden()).add(0,oKunde);
 				
 			}
 			rs.close();

@@ -16,22 +16,24 @@ public class TEssen {
 	private String FBezeichnung;
 	private String FKategorie;
 	private float FPreis;
-	private TKundenListeLokal FKundenListeLokal;
+	private Object FKundenListeLokal;
 	
 	int FAnzahl;
 	String FDatum;
+	int FKundenEssenID;
 	
 	
 	// implement
 	// CONSTRUCTOR
 	// @param to @property --> compile+
-	public TEssen(int AID, String ABezeichnung, String AKategorie, float APreis, int AAnzahl, String ADatum) {
+	public TEssen(int AID, String ABezeichnung, String AKategorie, float APreis, int AAnzahl, String ADatum,int AKundenEssenID) {
 		this.FID = AID;
 		this.FBezeichnung = ABezeichnung;
 		this.FKategorie = AKategorie;
 		this.FPreis = APreis;	
 		this.FAnzahl = AAnzahl;
 		this.FDatum = ADatum;
+		this.FKundenEssenID = AKundenEssenID;
 		
 		FKundenListeLokal = new TKundenListeLokal(new ArrayList<TKunde>()); // init
 	}
@@ -75,11 +77,11 @@ public class TEssen {
 	
 	// LISTE
 	
-	public TKundenListeLokal getKunden() {
+	public Object getKunden() {
 		return FKundenListeLokal;
 	}
 	
-	public void setKunden(TKundenListeLokal KundenListeLokal) {
+	public void setKunden(Object KundenListeLokal) {
 		this.FKundenListeLokal = KundenListeLokal;
 	}
 	
@@ -102,7 +104,14 @@ public class TEssen {
 		this.FDatum = Datum;
 	}
 	
+	// PROPERTY READ Anzahl WRITE Anzahl
+		public int getKundenEssenID() {
+			return FKundenEssenID;
+		}
 
+		public void setKundenEssenID(int KundenEssenID) {
+			this.FKundenEssenID = KundenEssenID;
+		}
 	/***************************************************************
 	 * METHODEN
 	 */
@@ -122,4 +131,21 @@ public class TEssen {
 		}
 		return EssenNr;
 	}
+	
+	public int saveOrder(int KuNr,int ENr,int Anzahl,String Datum ) {
+		String sql = "insert into tblKundenEssen (KuNr,ENr,Anzahl,Datum) values (" + KuNr + "," + ENr
+				+ ","+ Anzahl + ",'" + Datum + "');";
+		int PKid = -1;
+		try {
+			Statement stmt = TDatabase.connection.createStatement();
+			// execute the insert statement
+			stmt.executeUpdate(sql);
+			PKid = stmt.getGeneratedKeys().getInt(1);
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Fehler beim speichern der Daten in der KundenEssen Tabelle");
+		}
+		return PKid;
+	}
+	
 }
