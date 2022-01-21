@@ -115,4 +115,16 @@ public class TKunde {
 		return KuNr;
 	}
 
+	public void deleteOrder(int PKid) {
+		String sql = "delete from tblKundenEssen where PKid = " + PKid + ";";
+
+		try {
+			Statement stmt = TDatabase.connection.createStatement();
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Fehler beim update der Daten in der KundenEssen Tabelle");
+		}
+	}
+	
 }

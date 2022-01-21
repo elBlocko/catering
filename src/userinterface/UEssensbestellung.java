@@ -51,35 +51,30 @@ public class UEssensbestellung extends JInternalFrame {
 	private int selectedKuNr;
 	private JComboBox<String> cBoxDatum;
 	private String selectedDate;
- 
+
 	private int selectedAnzahl = 1;
-	
+
 	private JLabel lblFirma12;
 
 	private int rowIndexGrdMain = -1;
 
 	private TKunde oKunde = null;;
 	private TEssen oEssen = null;
-	
+
 	// INIT GRID HEADERS
 	Object[] columns = { "ID", "Datum", "Anzahl", "Bezeichnung" };
 	DefaultTableModel modelList = new DefaultTableModel();
 
 	Object[] rowList = new Object[4];
-	
 
-	
 	private int rowIndexGrdEssen = -1;
 
 	// INIT GRID HEADERS
-	Object[] columns2 = { "Nr.", "Bezeichnung","Preis" };
+	Object[] columns2 = { "Nr.", "Bezeichnung", "Preis" };
 	DefaultTableModel modelList2 = new DefaultTableModel();
 
 	Object[] rowList2 = new Object[3];
-	
 
-	
-	
 	/**
 	 * Launch the application.
 	 */
@@ -154,7 +149,7 @@ public class UEssensbestellung extends JInternalFrame {
 			public void itemStateChanged(ItemEvent e) {
 				selectedKuNr = Integer.parseInt(cBoxKundenNr.getSelectedItem().toString());
 				if (selectedDate != null) {
-				setGridContent();
+					setGridContent();
 				}
 				// System.out.println(selectedKuNr); // Werte doppelt
 			}
@@ -181,7 +176,7 @@ public class UEssensbestellung extends JInternalFrame {
 		JSpinner spinnerAnzahl = new JSpinner();
 		spinnerAnzahl.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				selectedAnzahl = (Integer)spinnerAnzahl.getValue();
+				selectedAnzahl = (Integer) spinnerAnzahl.getValue();
 				System.out.println(selectedAnzahl);
 			}
 		});
@@ -218,7 +213,7 @@ public class UEssensbestellung extends JInternalFrame {
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		panel_1.add(scrollPane_1, BorderLayout.CENTER);
-		
+
 		grdEssen = new JTable();
 		grdEssen.addMouseListener(new MouseAdapter() {
 			@Override
@@ -226,7 +221,7 @@ public class UEssensbestellung extends JInternalFrame {
 				rowIndexGrdEssen = grdEssen.getSelectedRow();
 			}
 		});
-		
+
 		grdEssen.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// my Method
 		setGrdEssenHeader();
@@ -237,6 +232,17 @@ public class UEssensbestellung extends JInternalFrame {
 		panel_2.setLayout(new BorderLayout(0, 0));
 
 		JButton btnDelete = new JButton("Bestellung l\u00F6schen");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rowIndexGrdMain != -1) {
+					deleteOrder();
+					setGridContent();
+				} else {
+					JOptionPane.showMessageDialog(null, "Keine Bestellung zum löschen ausgewählt");
+
+				}
+			}
+		});
 		panel_2.add(btnDelete, BorderLayout.EAST);
 
 		JButton btnAdd = new JButton("Bestellung hinzuf\u00FCgen");
@@ -249,8 +255,7 @@ public class UEssensbestellung extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "Kein Essen ausgewählt oder Anzahl ist nicht größer Null");
 
 				}
-				
-				
+
 			}
 		});
 		panel_2.add(btnAdd, BorderLayout.WEST);
@@ -328,37 +333,42 @@ public class UEssensbestellung extends JInternalFrame {
 		grdMain.setModel(modelList);
 
 	}
-	
+
 	private void setGrdEssenHeader() {
 		modelList2.setColumnIdentifiers(columns2);
 		grdEssen.setModel(modelList2);
-		
+
 	}
-	
+
 	private void setGrdEssenContent() {
-		
+
 		modelList2.setRowCount(0);
 		for (int i = 0; i < EssenListe1.size(); i++) {
-			
+
 			rowList2[0] = EssenListe1.get(i).getID(); // EssenNr
-			rowList2[1] = EssenListe1.get(i).getBezeichnung();			
-			rowList2[2] = String.format("%.2f",EssenListe1.get(i).getPreis()) + " €";
+			rowList2[1] = EssenListe1.get(i).getBezeichnung();
+			rowList2[2] = String.format("%.2f", EssenListe1.get(i).getPreis()) + " €";
 
 			modelList2.addRow(rowList2);
 		}
 	}
 
 	private void placeOrder() {
+		TEssen oEssenNeu;
+		
+		
+		// Ausgewähltes Objekt aus grdEssen
+		// hinzuzufügende Bestellung
 		oEssen = null;
 		int EssenNr = EssenListe1.get(rowIndexGrdEssen).getID();
 		for (TEssen tempEssen : EssenListe1) {
-		 if (tempEssen.getID() == EssenNr) {
-			 oEssen = tempEssen;
-			 break;
-		 }
+			if (tempEssen.getID() == EssenNr) {
+				oEssen = tempEssen;
+				break;
+			}
 		}
 		
-		
+		// ausgewählter Kunde anhand der gewählten ID in der ComboBox
 		oKunde = null;
 		for (TKunde tempKunde : KundenListe1) {
 			if (tempKunde.getID() == selectedKuNr) {
@@ -366,19 +376,43 @@ public class UEssensbestellung extends JInternalFrame {
 				break;
 			}
 		}
+
+		// Wenn es diese Bestellung schon gibt
+		// Dazu vergleiche alle EssensNummer-Werte in der lokalen KundenListe mit der
+		// EssensNr des ausgewählten Objekts und das Datum
+		for (TEssen tempEssen : oKunde.getEssen()) {
+			if (oEssen.getBezeichnung().equals(tempEssen.getBezeichnung()) && selectedDate.equals(tempEssen.getDatum())) {
+				int neueAnzahl = selectedAnzahl + tempEssen.getAnzahl();
+				tempEssen.setAnzahl(neueAnzahl);
+				tempEssen.saveUpdate(tempEssen.getKundenEssenID(),neueAnzahl);
+				return;
+			}
+		}
 		
+		// Ansonsten neues Objekt in der lokalen Liste erstellen und Eintrag in der tblEssenKunden hinzufügen
 		int tempKundenEssenID = oEssen.saveOrder(selectedKuNr, EssenNr, selectedAnzahl, selectedDate);
-		
-		
-		oEssen.setAnzahl(selectedAnzahl);
-		oEssen.setDatum(selectedDate);
-		oEssen.setKundenEssenID(tempKundenEssenID);
+
+		oEssenNeu = new TEssen(-1, oEssen.getBezeichnung(), oEssen.getKategorie(), oEssen.getPreis(), selectedAnzahl,
+				selectedDate, tempKundenEssenID);
+
+		oKunde.getEssen().add(oEssenNeu); // getEssen() ist die lokale EssensListe an einem Kunden
 		((TKundenListeLokal) oEssen.getKunden()).add(oKunde);
+
 		
-		oKunde.getEssen().add(oEssen); // getEssen() ist die lokale EssensListe an einem Kunden
-		
-		
-		
-		
+
 	}
+	
+	public void deleteOrder() {
+		oKunde = null;
+		for (TKunde tempKunde : KundenListe1) {
+			if (tempKunde.getID() == selectedKuNr) {
+				oKunde = tempKunde;
+				break;
+			}
+		}
+		int KundenEssenID = oKunde.getEssen().get(rowIndexGrdMain).getKundenEssenID();
+		oKunde.deleteOrder(KundenEssenID);	
+		oKunde.getEssen().remove(oKunde.getEssen().get(rowIndexGrdMain));
+		
+	}	
 }
