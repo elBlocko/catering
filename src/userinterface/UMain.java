@@ -234,7 +234,7 @@ public class UMain extends JFrame {
 
 	private void openJahrForm() {
 		desktopPane1.removeAll();
-		jahrForm1 = new UJahr();
+		jahrForm1 = new UJahr(KundenListe1,EssenListe1);
 		jahrForm1.setBounds(0, 0, desktopPane1.getWidth(), desktopPane1.getHeight());
 		desktopPane1.add(jahrForm1);
 		jahrForm1.setVisible(true);
@@ -242,7 +242,7 @@ public class UMain extends JFrame {
 
 	private void openMonatForm() {
 		desktopPane1.removeAll();
-		monatForm1 = new UMonat();
+		monatForm1 = new UMonat(KundenListe1,EssenListe1);
 		monatForm1.setBounds(0, 0, desktopPane1.getWidth(), desktopPane1.getHeight());
 		desktopPane1.add(monatForm1);
 		monatForm1.setVisible(true);

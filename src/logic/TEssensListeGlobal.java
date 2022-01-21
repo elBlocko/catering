@@ -105,6 +105,7 @@ public class TEssensListeGlobal extends TEssensListeBasis {
 						break;
 					}
 				}
+			
 				// neue Essensobjekte müssen erstellt werden, da das gleiche Essen
 				// bei unterschiedlichen Kunden unterschiedliche Werte bekommt
 				oEssenNeu = new TEssen(i, oEssen.getBezeichnung(), oEssen.getKategorie(), oEssen.getPreis(), tempAnzahl,

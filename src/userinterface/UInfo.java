@@ -11,6 +11,8 @@ import javax.swing.JList;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class UInfo extends JInternalFrame {
 	private String [] testArray = {"Programm zu Verwaltung der","Essensbestellungen im","Cateringgewerbe"};
@@ -63,6 +65,11 @@ public class UInfo extends JInternalFrame {
 		panel_6.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		
 		panel_6.add(btnNewButton);
 		
