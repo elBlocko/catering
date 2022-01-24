@@ -2,6 +2,9 @@ package database;
 
 
 import java.sql.*;
+
+import javax.swing.JOptionPane;
+
 import logic.*;
 
 public class TDatabase {
@@ -69,5 +72,20 @@ public class TDatabase {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void pragma() {
+		String sql = ("PRAGMA foreign_keys = ON;");
+		
+		try {
+			Statement stmt = connection.createStatement();
+			// execute the insert statement
+			stmt.executeUpdate(sql);
+			
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Fehler beim speichern der Daten in der Essens Tabelle");
+		}
+		
 	}
 }
