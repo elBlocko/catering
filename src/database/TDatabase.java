@@ -36,7 +36,7 @@ public class TDatabase {
 			if (connection != null)
 				return;
 			System.out.println("Creating Connection to Database...");
-			connection = DriverManager.getConnection("jdbc:sqlite:" + TConstants.CDatabasePath);
+			connection = DriverManager.getConnection("jdbc:sqlite:" + TConstants.CDatabasePath);			
 			if (!connection.isClosed())
 				System.out.println("...Connection established");
 		} catch (SQLException e) {

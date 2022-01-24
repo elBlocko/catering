@@ -283,7 +283,7 @@ public class UMain extends JFrame {
 	void connectDatabase() {
 		// establish connection to database
 		TDatabase database1 = TDatabase.getInstance();
-		database1.connect();
+		database1.connect();		
 	}
 	void createLists() {
 		KundenListe1 = new TKundenListeGlobal(new ArrayList<TKunde>()); // init		
