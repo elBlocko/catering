@@ -292,7 +292,7 @@ public class UEssensbestellung extends JInternalFrame {
 	}
 
 	private void set_cBoxDatum() {
-		String[] date = { "28.11.2021", "29.11.2021", "30.11.2021" };
+		String[] date = { "2021-11-28", "2021-11-29", "2021-11-30", "2022-11-28" };
 		for (int i = 0; i < date.length; i++) {
 			cBoxDatum.addItem(date[i]);
 
@@ -355,8 +355,7 @@ public class UEssensbestellung extends JInternalFrame {
 
 	private void placeOrder() {
 		TEssen oEssenNeu;
-		
-		
+
 		// Ausgewähltes Objekt aus grdEssen
 		// hinzuzufügende Bestellung
 		oEssen = null;
@@ -367,7 +366,7 @@ public class UEssensbestellung extends JInternalFrame {
 				break;
 			}
 		}
-		
+
 		// ausgewählter Kunde anhand der gewählten ID in der ComboBox
 		oKunde = null;
 		for (TKunde tempKunde : KundenListe1) {
@@ -381,15 +380,17 @@ public class UEssensbestellung extends JInternalFrame {
 		// Dazu vergleiche alle EssensNummer-Werte in der lokalen KundenListe mit der
 		// EssensNr des ausgewählten Objekts und das Datum
 		for (TEssen tempEssen : oKunde.getEssen()) {
-			if (oEssen.getBezeichnung().equals(tempEssen.getBezeichnung()) && selectedDate.equals(tempEssen.getDatum())) {
+			if (oEssen.getBezeichnung().equals(tempEssen.getBezeichnung())
+					&& selectedDate.equals(tempEssen.getDatum())) {
 				int neueAnzahl = selectedAnzahl + tempEssen.getAnzahl();
 				tempEssen.setAnzahl(neueAnzahl);
-				tempEssen.saveUpdate(tempEssen.getKundenEssenID(),neueAnzahl);
+				tempEssen.saveUpdate(tempEssen.getKundenEssenID(), neueAnzahl);
 				return;
 			}
 		}
-		
-		// Ansonsten neues Objekt in der lokalen Liste erstellen und Eintrag in der tblEssenKunden hinzufügen
+
+		// Ansonsten neues Objekt in der lokalen Liste erstellen und Eintrag in der
+		// tblEssenKunden hinzufügen
 		int tempKundenEssenID = oEssen.saveOrder(selectedKuNr, EssenNr, selectedAnzahl, selectedDate);
 
 		oEssenNeu = new TEssen(-1, oEssen.getBezeichnung(), oEssen.getKategorie(), oEssen.getPreis(), selectedAnzahl,
@@ -398,10 +399,8 @@ public class UEssensbestellung extends JInternalFrame {
 		oKunde.getEssen().add(oEssenNeu); // getEssen() ist die lokale EssensListe an einem Kunden
 		((TKundenListeLokal) oEssen.getKunden()).add(oKunde);
 
-		
-
 	}
-	
+
 	public void deleteOrder() {
 		oKunde = null;
 		for (TKunde tempKunde : KundenListe1) {
@@ -411,8 +410,8 @@ public class UEssensbestellung extends JInternalFrame {
 			}
 		}
 		int KundenEssenID = oKunde.getEssen().get(rowIndexGrdMain).getKundenEssenID();
-		oKunde.deleteOrder(KundenEssenID);	
+		oKunde.deleteOrder(KundenEssenID);
 		oKunde.getEssen().remove(oKunde.getEssen().get(rowIndexGrdMain));
-		
-	}	
+
+	}
 }
