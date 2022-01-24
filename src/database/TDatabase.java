@@ -84,8 +84,55 @@ public class TDatabase {
 			
 			stmt.close();
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Fehler beim speichern der Daten in der Essens Tabelle");
+			JOptionPane.showMessageDialog(null, "Fehler beim ausführen des PRAGAM FOREIGN KEY ON Befehls");
 		}
+		
+	}
+	
+	public void createTablesIFNOTEXIST() {
+		String sql = ("create table IF NOT EXISTS tblKunden ("
+				+ "KuNr integer not null primary key autoincrement,"
+				+ "Firma1 varchar (100),"
+				+ "Firma2 varchar (100),"
+				+ "Strasse varchar (100),"
+				+ "PLZ varchar (5),"
+				+ "Ort varchar (100)"
+				+ ");");
+		
+		try {
+			Statement stmt = connection.createStatement();
+			// execute the insert statement
+			stmt.executeUpdate(sql);
+			sql = ("create table IF NOT EXISTS tblEssen ("
+					+ "EssenNr integer not null primary key autoincrement,"
+					+ "Bezeichnung varchar (100),"
+					+ "Kategorie varchar (100),"
+					+ "Preis real (100)"
+					+ ");");
+			
+			stmt.executeUpdate(sql);
+			sql = ("create table IF NOT EXISTS tblKundenEssen ("
+					+ "PKid integer not null primary key autoincrement,"
+					+ "KuNr integer null references tblKunden (KuNr) on delete cascade on update cascade,"
+					+ "ENr integer null references tblEssen (EssenNr) on delete cascade on update cascade,"
+					+ "Anzahl integer (5),"
+					+ "Datum varchar (40)"
+					+ ");"
+					+ "");
+			stmt.executeUpdate(sql);
+			
+			sql = ("create table IF NOT EXISTS tblWochenplan ("
+					+ "PKid integer not null primary key autoincrement,"
+					+ "ENr integer null references tblEssen (EssenNr) on delete cascade on update cascade,"
+					+ "Datum varchar (40)"
+					+ ");");
+			stmt.executeUpdate(sql);
+			
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Fehler beim erstellen der Tebellen, heho!");
+		}
+		
 		
 	}
 }

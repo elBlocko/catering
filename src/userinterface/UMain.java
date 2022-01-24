@@ -71,7 +71,7 @@ public class UMain extends JFrame {
 	public UMain() {
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowOpened(WindowEvent e) {
+			public void windowOpened(WindowEvent e) {				
 				connectDatabase();
 				createLists();
 				setListContent();
@@ -285,6 +285,7 @@ public class UMain extends JFrame {
 		TDatabase database1 = TDatabase.getInstance();
 		database1.connect();	
 		database1.pragma();
+		database1.createTablesIFNOTEXIST();
 	}	
 	
 	
@@ -299,4 +300,5 @@ public class UMain extends JFrame {
 		EssenListe1.setContent(); // fill list
 			
 	}
+
 } // end of class

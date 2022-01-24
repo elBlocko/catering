@@ -32,7 +32,7 @@ public class UJahr extends JInternalFrame {
 	private JTable grdMain;
 	private int selectedKuNr;
 	private JComboBox<Integer> cBoxKundenNr;
-	private TKunde oKunde;
+	private TKunde oKunde = null;
 	private static TKundenListeGlobal KundenListe1;
 	private static TEssensListeGlobal EssenListe1;
 	private JLabel lblFirma12;
@@ -184,10 +184,13 @@ public class UJahr extends JInternalFrame {
 	}
 
 	private void setLabelFirma12() {
-		if (oKunde.getFirma2() != null) {
-			lblFirma12.setText(oKunde.getFirma1() + ' ' + oKunde.getFirma2());
-		} else {
-			lblFirma12.setText(oKunde.getFirma1());
+		if (oKunde != null) {
+			if (oKunde.getFirma2() != null) {
+				lblFirma12.setText(oKunde.getFirma1() + ' ' + oKunde.getFirma2());
+			} else {
+				lblFirma12.setText(oKunde.getFirma1());
+			}
+
 		}
 	}
 
@@ -197,33 +200,31 @@ public class UJahr extends JInternalFrame {
 		int Year;
 		int nextYear;
 		modelList.setRowCount(0);
-
-		for (int i = 0; i < oKunde.getEssen().size(); i++) {
-			dateArray.add(oKunde.getEssen().get(i).getDatum());
-			Collections.sort(dateArray);
-		}
-
-		for (int j = 0; j < dateArray.size(); j++) {
-			Year = Integer.parseInt(dateArray.get(j).split("\\-")[0]);
-			if ((j+1) != dateArray.size()) {
-			nextYear = Integer.parseInt(dateArray.get(j+1).split("\\-")[0]);
-			} else {
-				nextYear = 0;
-				
+		if (oKunde != null) {
+			for (int i = 0; i < oKunde.getEssen().size(); i++) {
+				dateArray.add(oKunde.getEssen().get(i).getDatum());
+				Collections.sort(dateArray);
 			}
-			if (Year != nextYear) {
-			
-			
-			
-			double BruttoPreis = oKunde.getEssen().getJahresBrutto(selectedKuNr, Year);
 
-			rowList[0] = Year;
-			rowList[1] = String.format("%.2f", BruttoPreis) + " €";
+			for (int j = 0; j < dateArray.size(); j++) {
+				Year = Integer.parseInt(dateArray.get(j).split("\\-")[0]);
+				if ((j + 1) != dateArray.size()) {
+					nextYear = Integer.parseInt(dateArray.get(j + 1).split("\\-")[0]);
+				} else {
+					nextYear = 0;
 
-			modelList.addRow(rowList);
+				}
+				if (Year != nextYear) {
+
+					double BruttoPreis = oKunde.getEssen().getJahresBrutto(selectedKuNr, Year);
+
+					rowList[0] = Year;
+					rowList[1] = String.format("%.2f", BruttoPreis) + " €";
+
+					modelList.addRow(rowList);
+				}
+			}
 		}
-		}
-		
 
 	}
 

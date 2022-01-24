@@ -36,7 +36,7 @@ public class UMonat extends JInternalFrame {
 	private JComboBox<Integer> cBoxKundenNr;
 	private int selectedKuNr;
 	private JLabel lblFirma12;
-	private TKunde oKunde;
+	private TKunde oKunde = null;
 
 	// INIT GRID HEADERS
 	Object[] columns = { "Jahr", "Monat", "Brutto" };
@@ -200,33 +200,34 @@ public class UMonat extends JInternalFrame {
 		int Month;
 		int nextMonth;
 		modelList.setRowCount(0);
-
-		for (int i = 0; i < oKunde.getEssen().size(); i++) {
-			dateArray.add(oKunde.getEssen().get(i).getDatum());
-			Collections.sort(dateArray);
-		}
-
-		for (int j = 0; j < dateArray.size(); j++) {
-			Year = Integer.parseInt(dateArray.get(j).split("\\-")[0]);
-			Month = Integer.parseInt(dateArray.get(j).split("\\-")[1]);
-			if ((j + 1) != dateArray.size()) {
-				nextYear = Integer.parseInt(dateArray.get(j + 1).split("\\-")[0]);
-				nextMonth = Integer.parseInt(dateArray.get(j + 1).split("\\-")[1]);
-
-			} else {
-				nextYear =0;
-				nextMonth = 0;
-
+		if (oKunde != null) {
+			for (int i = 0; i < oKunde.getEssen().size(); i++) {
+				dateArray.add(oKunde.getEssen().get(i).getDatum());
+				Collections.sort(dateArray);
 			}
-			if (Month != nextMonth || nextYear == Year) {
 
-				double BruttoPreis = oKunde.getEssen().getMonatsBrutto(selectedKuNr, Month, Year);
+			for (int j = 0; j < dateArray.size(); j++) {
+				Year = Integer.parseInt(dateArray.get(j).split("\\-")[0]);
+				Month = Integer.parseInt(dateArray.get(j).split("\\-")[1]);
+				if ((j + 1) != dateArray.size()) {
+					nextYear = Integer.parseInt(dateArray.get(j + 1).split("\\-")[0]);
+					nextMonth = Integer.parseInt(dateArray.get(j + 1).split("\\-")[1]);
 
-				rowList[0] = Year;
-				rowList[1] = Month;
-				rowList[2] = String.format("%.2f", BruttoPreis) + " €";
+				} else {
+					nextYear = 0;
+					nextMonth = 0;
 
-				modelList.addRow(rowList);
+				}
+				if (Month != nextMonth || nextYear == Year) {
+
+					double BruttoPreis = oKunde.getEssen().getMonatsBrutto(selectedKuNr, Month, Year);
+
+					rowList[0] = Year;
+					rowList[1] = Month;
+					rowList[2] = String.format("%.2f", BruttoPreis) + " €";
+
+					modelList.addRow(rowList);
+				}
 			}
 		}
 

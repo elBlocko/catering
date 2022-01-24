@@ -103,7 +103,7 @@ public class UEssensbestellung extends JInternalFrame {
 			@Override
 			public void internalFrameOpened(InternalFrameEvent e) {
 				set_cBoxKundenNr();
-				set_cBoxDatum();
+				set_cBoxDatum();				
 				setGrdEssenContent();
 			}
 		});
@@ -149,6 +149,7 @@ public class UEssensbestellung extends JInternalFrame {
 			public void itemStateChanged(ItemEvent e) {
 				selectedKuNr = Integer.parseInt(cBoxKundenNr.getSelectedItem().toString());
 				if (selectedDate != null) {
+					
 					setGridContent();
 				}
 				// System.out.println(selectedKuNr); // Werte doppelt
@@ -218,7 +219,7 @@ public class UEssensbestellung extends JInternalFrame {
 		grdEssen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				rowIndexGrdEssen = grdEssen.getSelectedRow();
+				rowIndexGrdEssen = grdEssen.getSelectedRow();				
 			}
 		});
 
@@ -268,6 +269,7 @@ public class UEssensbestellung extends JInternalFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				rowIndexGrdMain = grdMain.getSelectedRow();
+				
 			}
 		});
 
@@ -309,21 +311,23 @@ public class UEssensbestellung extends JInternalFrame {
 		}
 
 		modelList.setRowCount(0);
-		for (int i = 0; i < oKunde.getEssen().size(); i++) {
-			if (selectedDate.equals(oKunde.getEssen().get(i).getDatum())) {
-				rowList[0] = oKunde.getEssen().get(i).getKundenEssenID();
-				rowList[1] = oKunde.getEssen().get(i).getDatum();
-				rowList[2] = oKunde.getEssen().get(i).getAnzahl();
-				rowList[3] = oKunde.getEssen().get(i).getBezeichnung();
+		if (oKunde != null) {
+			for (int i = 0; i < oKunde.getEssen().size(); i++) {
+				if (selectedDate.equals(oKunde.getEssen().get(i).getDatum())) {
+					rowList[0] = oKunde.getEssen().get(i).getKundenEssenID();
+					rowList[1] = oKunde.getEssen().get(i).getDatum();
+					rowList[2] = oKunde.getEssen().get(i).getAnzahl();
+					rowList[3] = oKunde.getEssen().get(i).getBezeichnung();
 
-				modelList.addRow(rowList);
+					modelList.addRow(rowList);
+				}
 			}
-		}
 
-		if (oKunde.getFirma2() != null) {
-			lblFirma12.setText(oKunde.getFirma1() + ' ' + oKunde.getFirma2());
-		} else {
-			lblFirma12.setText(oKunde.getFirma1());
+			if (oKunde.getFirma2() != null) {
+				lblFirma12.setText(oKunde.getFirma1() + ' ' + oKunde.getFirma2());
+			} else {
+				lblFirma12.setText(oKunde.getFirma1());
+			}
 		}
 	}
 
@@ -367,7 +371,7 @@ public class UEssensbestellung extends JInternalFrame {
 			}
 		}
 
-		// ausgewählter Kunde anhand der gewählten ID in der ComboBox
+		// ausgewählter Kunde anhand der gewählten ID
 		oKunde = null;
 		for (TKunde tempKunde : KundenListe1) {
 			if (tempKunde.getID() == selectedKuNr) {
@@ -414,4 +418,5 @@ public class UEssensbestellung extends JInternalFrame {
 		oKunde.getEssen().remove(oKunde.getEssen().get(rowIndexGrdMain));
 
 	}
+	
 }
