@@ -65,6 +65,19 @@ public class TKundenListeGlobal extends TKundenListeBasis {
 		}
 	}
 
+	public int getCountKundenBestellung(int KuNr) {
+		int num = 0;
+		try {
+			Statement stmt = TDatabase.connection.createStatement();
 
+			ResultSet rs = stmt.executeQuery("select count(*) as num from tblKundenEssen where KuNr = " + KuNr + "");
+			num = rs.getInt("num");
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Fehler beim Berechnen Anzahl an verknüpften Kundenbestellungen");
+		}
+		return num;
+	}
 
 }

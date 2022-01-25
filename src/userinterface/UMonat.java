@@ -225,6 +225,9 @@ public class UMonat extends JInternalFrame {
 				// der alle Einträge Summiert und mit der Anzahl multipliziert
 				// die Übergänge von gleichem Jahr auf gleichen Monat
 				// und von gleichem Monat auf anderes Jahr sind besonders zu beachten
+				// a) nachfolgemonat ändert sich nicht, aber Jahr
+				// b) nachfolgemonat ändert sich, aber Jahr nicht
+				// c) kein Einträge nach dem Monat mehr
 				if (Month != nextMonth && nextYear == Year || Month == nextMonth && nextYear != Year || nextMonth == 0 && nextYear == 0) {
 
 					double BruttoPreis = oKunde.getEssen().getMonatsBrutto(selectedKuNr, Month, Year);

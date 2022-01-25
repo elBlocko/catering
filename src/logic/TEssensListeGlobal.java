@@ -64,6 +64,21 @@ public class TEssensListeGlobal extends TEssensListeBasis {
 		}
 	}
 
+	public int getCountEssenBestellung(int ENr) {
+		int num = 0;
+		try {
+			Statement stmt = TDatabase.connection.createStatement();
+
+			ResultSet rs = stmt.executeQuery("select count(*) as num from tblKundenEssen where ENr = " + ENr + "");
+			num = rs.getInt("num");
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Fehler beim Berechnen Anzahl an verknüpften Essensbestellungen");
+		}
+		return num;
+	}
+
 	// LOKALE LISTEN ZUORDNEN
 	private void essenZuKunden() {
 
@@ -105,7 +120,7 @@ public class TEssensListeGlobal extends TEssensListeBasis {
 						break;
 					}
 				}
-			
+
 				// neue Essensobjekte müssen erstellt werden, da das gleiche Essen
 				// bei unterschiedlichen Kunden unterschiedliche Werte bekommt
 				oEssenNeu = new TEssen(i, oEssen.getBezeichnung(), oEssen.getKategorie(), oEssen.getPreis(), tempAnzahl,

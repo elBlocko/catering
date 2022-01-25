@@ -37,7 +37,7 @@ public class UEssen extends JInternalFrame {
 
 	private JPanel panel;
 	private JPanel panel_3;
-	
+
 	private int rowIndexGrdMain = -1;
 
 	// INIT GRID HEADERS
@@ -103,7 +103,7 @@ public class UEssen extends JInternalFrame {
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rowIndexGrdMain != -1) {
-					deleteSelectedKunde();
+					deleteSelectedEssen();
 				} else {
 					JOptionPane.showMessageDialog(null, "nichts zum löschen ausgewählt");
 
@@ -187,11 +187,11 @@ public class UEssen extends JInternalFrame {
 		// DecimalFormat formatter = new DecimalFormat("#,###0.00");
 		modelList.setRowCount(0);
 		for (int i = 0; i < EssenListe1.size(); i++) {
-			
+
 			rowList[0] = EssenListe1.get(i).getID(); // EssenNr
 			rowList[1] = EssenListe1.get(i).getBezeichnung();
 			rowList[2] = EssenListe1.get(i).getKategorie();
-			rowList[3] = String.format("%.2f",EssenListe1.get(i).getPreis()) + " €";
+			rowList[3] = String.format("%.2f", EssenListe1.get(i).getPreis()) + " €";
 
 			modelList.addRow(rowList);
 		}
@@ -204,17 +204,69 @@ public class UEssen extends JInternalFrame {
 
 	}
 
-	void deleteSelectedKunde() {
+	void deleteSelectedEssen() {
 
 		int EssenNr = EssenListe1.get(rowIndexGrdMain).getID();
-		EssenListe1.delete(EssenNr);
-		for (TEssen Essen : EssenListe1) {
-			if (Essen.getID() == EssenNr) {
-				EssenListe1.remove(Essen);
+
+		int num = EssenListe1.getCountEssenBestellung(EssenNr);
+
+		if (num == 0) {
+			int test = JOptionPane.showConfirmDialog(null, "Möchten Sie wirklich >>"
+					+ EssenListe1.get(rowIndexGrdMain).getBezeichnung() + "<< aus den Stammdaten löschen?", "Löschen",
+					JOptionPane.YES_NO_CANCEL_OPTION);
+			switch (test) {
+			case 0: {
+				// Yes option
+				EssenListe1.delete(EssenNr);
+				for (TEssen Essen : EssenListe1) {
+					if (Essen.getID() == EssenNr) {
+						EssenListe1.remove(Essen);
+						break;
+					}
+				}
+				setGridContent();
 				break;
 			}
+			case 1: {
+				System.exit(0); // No option
+				break;
+			}
+			case 2: {
+				System.exit(0); // Cancel option
+				break;
+			}
+			}
 		}
-		setGridContent();
+
+		if (num > 0) {
+			int test = JOptionPane.showConfirmDialog(null, "Möchten Sie wirklich >>"
+					+ EssenListe1.get(rowIndexGrdMain).getBezeichnung()
+					+ "<< aus den Stammdaten löschen? \r\n Es existieren zu dem Essen noch Bestellungen ! \r\n" + "Die Bestellungen werden dann mitgelöscht !",
+					"Löschen", JOptionPane.YES_NO_CANCEL_OPTION);
+			switch (test) {
+			case 0: {
+				// Yes option
+				EssenListe1.delete(EssenNr);
+				for (TEssen Essen : EssenListe1) {
+					if (Essen.getID() == EssenNr) {
+						EssenListe1.remove(Essen);
+						break;
+					}
+				}
+				setGridContent();
+				break;
+			}
+			case 1: {
+				System.exit(0); // No option
+				break;
+			}
+			case 2: {
+				System.exit(0); // Cancel option
+				break;
+			}
+			}
+		}
+
 	}
 
 	void addKunde() {
@@ -224,25 +276,32 @@ public class UEssen extends JInternalFrame {
 				JOptionPane.showMessageDialog(null, "Bitte alle Felder ausfüllen!");
 				return;
 			}
-			float tempPreis = 0;
-			// Werte aus den Textfeldern holen
-			String tempBezeichnung = tfBezeichnung.getText();
-			String tempKategorie = tfKategorie.getText();
-			try {
-				tempPreis = Float.parseFloat(tfPreis.getText());
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Preis darf nur Zahlen mit Nachkommastellen");
+
+			if (tfBezeichnung.getText().length() >= 100 || tfKategorie.getText().length() >= 100
+					|| tfPreis.getText().length() >= 100) {
+				JOptionPane.showMessageDialog(null, "Die Länge der maximalen Eingabe wurde überschritten");
+				return;
 			}
 
-			TEssen tempEssen = new TEssen(-1, tempBezeichnung, tempKategorie, tempPreis,-1,null,-1); // Objekt
-																							// erstellen
+			float tempPreis = 0;
+			// Werte aus den Textfeldern holen
+			String tempBezeichnung = tfBezeichnung.getText().trim();
+			String tempKategorie = tfKategorie.getText().trim();
+			try {
+				tempPreis = Float.parseFloat(tfPreis.getText().trim());
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Preis darf nur Zahlen mit Nachkommastellen enthalten");
+			}
+
+			TEssen tempEssen = new TEssen(-1, tempBezeichnung, tempKategorie, tempPreis, -1, null, -1); // Objekt
+			// erstellen
 			int EssenNr = tempEssen.save(tempBezeichnung, tempKategorie, tempPreis); // Objekt in der Datenbank
 																						// speichern
 			tempEssen.setID(EssenNr); // Rückgabewert von "save" als neue KuNr setzen
 			EssenListe1.add(tempEssen); // Objekt der Liste hinzufügen
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Fehler beim erstellen eines neuen Kunden");
+			JOptionPane.showMessageDialog(null, "Fehler beim erstellen eines neuen Essens");
 		}
 
 		setGridContent();
@@ -269,7 +328,7 @@ public class UEssen extends JInternalFrame {
 				rowList[0] = EssenListe1.get(i).getID(); // EssenNr
 				rowList[1] = EssenListe1.get(i).getBezeichnung();
 				rowList[2] = EssenListe1.get(i).getKategorie();
-				rowList[3] = String.format("%.2f",EssenListe1.get(i).getPreis() + " €");
+				rowList[3] = String.format("%.2f", EssenListe1.get(i).getPreis() + " €");
 
 				modelList.addRow(rowList);
 				match = true;

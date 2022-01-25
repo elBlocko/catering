@@ -217,7 +217,7 @@ public class UKunden extends JInternalFrame {
 				}
 			}
 		});
-		
+
 		panel_1.add(tfSearchbar);
 		tfSearchbar.setColumns(10);
 
@@ -265,14 +265,66 @@ public class UKunden extends JInternalFrame {
 	void deleteSelectedKunde() {
 
 		int KuNr = KundenListe1.get(rowIndexGrdMain).getID();
-		KundenListe1.delete(KuNr);
-		for (TKunde Kunde : KundenListe1) {
-			if (Kunde.getID() == KuNr) {
-				KundenListe1.remove(Kunde);
+		int num = KundenListe1.getCountKundenBestellung(KuNr);
+		if (num == 0) {
+			int test = JOptionPane.showConfirmDialog(null, "Möchten Sie wirklich >>"
+					+ KundenListe1.get(rowIndexGrdMain).getFirma1() + "<< aus den Stammdaten löschen?", "Löschen",
+					JOptionPane.YES_NO_CANCEL_OPTION);
+			switch (test) {
+			case 0: {
+				// Yes option
+
+				KundenListe1.delete(KuNr);
+				for (TKunde Kunde : KundenListe1) {
+					if (Kunde.getID() == KuNr) {
+						KundenListe1.remove(Kunde);
+						break;
+					}
+				}				
+				setGridContent();
 				break;
 			}
+			case 1: {
+				System.exit(0); // No option
+				break;
+			}
+			case 2: {
+				System.exit(0); // Cancel option
+				break;
+			}
+			}
 		}
-		setGridContent();
+
+		if (num > 0) {
+			int test = JOptionPane.showConfirmDialog(null, "Möchten Sie wirklich >>"
+					+ KundenListe1.get(rowIndexGrdMain).getFirma1()
+					+ "<< aus den Stammdaten löschen? \r\n Es existieren zu dem Kunden noch Bestellungen ! \r\n" + "Die Bestellungen werden dann mitgelöscht !",
+					"Löschen", JOptionPane.YES_NO_CANCEL_OPTION);
+			switch (test) {
+			case 0: {
+				// Yes option
+
+				KundenListe1.delete(KuNr);
+				for (TKunde Kunde : KundenListe1) {
+					if (Kunde.getID() == KuNr) {
+						KundenListe1.remove(Kunde);
+						break;
+					}
+				}
+				setGridContent();
+				break;
+			}
+			case 1: {
+				System.exit(0); // No option
+				break;
+			}
+			case 2: {
+				System.exit(0); // Cancel option
+				break;
+			}
+			}
+		}
+
 	}
 
 	void addKunde() {
@@ -283,12 +335,19 @@ public class UKunden extends JInternalFrame {
 				return;
 			}
 
+			if (tfFirma1.getText().length() >= 100 || tfFirma2.getText().length() >= 100
+					|| tfOrt.getText().length() >= 100 || tfPLZ.getText().length() >= 5
+					|| tfStrasse.getText().length() >= 100) {
+				JOptionPane.showMessageDialog(null, "Die Länge der maximalen Eingabe wurde überschritten");
+				return;
+			}
+
 			// Werte aus den Textfeldern holen
-			String tempFirma1 = tfFirma1.getText();
-			String tempFirma2 = tfFirma2.getText();
-			String tempStrasse = tfStrasse.getText();
-			String tempPLZ = tfPLZ.getText();
-			String tempOrt = tfOrt.getText();
+			String tempFirma1 = tfFirma1.getText().trim();
+			String tempFirma2 = tfFirma2.getText().trim();
+			String tempStrasse = tfStrasse.getText().trim();
+			String tempPLZ = tfPLZ.getText().trim();
+			String tempOrt = tfOrt.getText().trim();
 
 			TKunde tempKunde = new TKunde(-1, tempFirma1, tempFirma2, tempStrasse, tempPLZ, tempOrt); // Objekt
 																										// erstellen
@@ -313,7 +372,7 @@ public class UKunden extends JInternalFrame {
 		tfPLZ.setText("");
 		tfOrt.setText("");
 	}
-	
+
 	void searchGrdMain() {
 		int i = 0;
 		boolean match = false;
@@ -322,7 +381,8 @@ public class UKunden extends JInternalFrame {
 			return;
 		}
 		for (TKunde tempKunde : KundenListe1) {
-			if (tfSearchbar.getText().equals(tempKunde.getFirma1()) || tfSearchbar.getText().equals(tempKunde.getFirma2())) {
+			if (tfSearchbar.getText().equals(tempKunde.getFirma1())
+					|| tfSearchbar.getText().equals(tempKunde.getFirma2())) {
 				modelList.setRowCount(0);
 				rowList[0] = KundenListe1.get(i).getID();
 				rowList[1] = KundenListe1.get(i).getFirma1();
