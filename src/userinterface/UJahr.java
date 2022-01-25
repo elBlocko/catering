@@ -36,7 +36,7 @@ public class UJahr extends JInternalFrame {
 	private static TKundenListeGlobal KundenListe1;
 	private static TEssensListeGlobal EssenListe1;
 	private JLabel lblFirma12;
-
+	private JLabel lblAusgabe;
 	// INIT GRID HEADERS
 	Object[] columns = { "Jahr", "Brutto" };
 	DefaultTableModel modelList = new DefaultTableModel();
@@ -122,7 +122,7 @@ public class UJahr extends JInternalFrame {
 		JLabel lblNewLabel_2 = new JLabel("Brutto");
 		panel_7.add(lblNewLabel_2);
 
-		JLabel lblAusgabe = new JLabel(" . . . ");
+		lblAusgabe = new JLabel(" . . . ");
 		panel_7.add(lblAusgabe);
 
 		JPanel panel_8 = new JPanel();
@@ -223,7 +223,10 @@ public class UJahr extends JInternalFrame {
 
 					modelList.addRow(rowList);
 				}
+				double GesamtPreis = oKunde.getEssen().getJahresBrutto(selectedKuNr, Year);
+				lblAusgabe.setText(String.valueOf(GesamtPreis));
 			}
+			
 		}
 
 	}

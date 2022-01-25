@@ -36,6 +36,7 @@ public class UMonat extends JInternalFrame {
 	private JComboBox<Integer> cBoxKundenNr;
 	private int selectedKuNr;
 	private JLabel lblFirma12;
+	private JLabel lblAusgabe;
 	private TKunde oKunde = null;
 
 	// INIT GRID HEADERS
@@ -127,7 +128,7 @@ public class UMonat extends JInternalFrame {
 		JLabel lblNewLabel_2 = new JLabel("Brutto");
 		panel_7.add(lblNewLabel_2);
 
-		JLabel lblAusgabe = new JLabel(" . . . ");
+		lblAusgabe = new JLabel(" . . . ");
 		panel_7.add(lblAusgabe);
 
 		JPanel panel_8 = new JPanel();
@@ -218,7 +219,13 @@ public class UMonat extends JInternalFrame {
 					nextMonth = 0;
 
 				}
-				if (Month != nextMonth || nextYear == Year) {
+				// erst der letzte Monat vor dem nächsten wird übergeben, 
+				// damit nicht mehrere Einträge in der JTable Ansicht entstehen
+				// es muss nur das Jahr und der Monat übergeben werden für den SQL Befehl,
+				// der alle Einträge Summiert und mit der Anzahl multipliziert
+				// die Übergänge von gleichem Jahr auf gleichen Monat
+				// und von gleichem Monat auf anderes Jahr sind besonders zu beachten
+				if (Month != nextMonth && nextYear == Year || Month == nextMonth && nextYear != Year || nextMonth == 0 && nextYear == 0) {
 
 					double BruttoPreis = oKunde.getEssen().getMonatsBrutto(selectedKuNr, Month, Year);
 
@@ -228,6 +235,8 @@ public class UMonat extends JInternalFrame {
 
 					modelList.addRow(rowList);
 				}
+				double GesamtPreis = oKunde.getEssen().getJahresBrutto(selectedKuNr, Year);
+				lblAusgabe.setText(String.valueOf(GesamtPreis));
 			}
 		}
 
