@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 
+import logic.DateLabelFormatter;
 import logic.TEssen;
 import logic.TEssensListeGlobal;
 import logic.TKunde;
@@ -18,6 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField.AbstractFormatter;
+
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JSpinner;
@@ -29,7 +32,16 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.table.DefaultTableModel;
 
+import org.jdatepicker.impl.DateComponentFormatter;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
@@ -40,6 +52,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.SwingConstants;
 
 public class UEssensbestellung extends JInternalFrame {
 
@@ -60,6 +73,12 @@ public class UEssensbestellung extends JInternalFrame {
 
 	private TKunde oKunde = null;;
 	private TEssen oEssen = null;
+
+	private UtilDateModel model = new UtilDateModel();
+	private Properties p = new Properties();
+
+	private JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+	private JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
 
 	// INIT GRID HEADERS
 	Object[] columns = { "ID", "Datum", "Anzahl", "Bezeichnung" };
@@ -84,6 +103,7 @@ public class UEssensbestellung extends JInternalFrame {
 				try {
 					UEssensbestellung frame = new UEssensbestellung(KundenListe1, EssenListe1);
 					frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -103,7 +123,7 @@ public class UEssensbestellung extends JInternalFrame {
 			@Override
 			public void internalFrameOpened(InternalFrameEvent e) {
 				set_cBoxKundenNr();
-				set_cBoxDatum();				
+				set_cBoxDatum();
 				setGrdEssenContent();
 			}
 		});
@@ -149,7 +169,7 @@ public class UEssensbestellung extends JInternalFrame {
 			public void itemStateChanged(ItemEvent e) {
 				selectedKuNr = Integer.parseInt(cBoxKundenNr.getSelectedItem().toString());
 				if (selectedDate != null) {
-					
+
 					setGridContent();
 				}
 				// System.out.println(selectedKuNr); // Werte doppelt
@@ -184,6 +204,33 @@ public class UEssensbestellung extends JInternalFrame {
 		spinnerAnzahl.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
 		panel_9.add(spinnerAnzahl);
 
+		UtilDateModel model = new UtilDateModel();
+		// model.setDate(20,04,2014);
+		// Need this...
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		/*JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		// Don't know about the formatter, but there it is...
+		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());*/
+		datePicker.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("action");
+				System.out.println(datePicker.getModel().getValue());
+				/*
+				if (datePicker.getModel().getValue() != null) {
+					Date selDate = (Date) datePicker.getModel().getValue();
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					selectedDate = df.format(selDate);
+					System.out.println(selectedDate);
+				}
+*/
+				setSelectedDate();
+
+			}
+		});
+
 		JPanel panel_10 = new JPanel();
 		FlowLayout flowLayout_3 = (FlowLayout) panel_10.getLayout();
 		flowLayout_3.setAlignment(FlowLayout.LEFT);
@@ -191,6 +238,7 @@ public class UEssensbestellung extends JInternalFrame {
 
 		JLabel lblNewLabel_5 = new JLabel("Datum: ");
 		panel_10.add(lblNewLabel_5);
+		panel_10.add(datePicker);
 
 		cBoxDatum = new JComboBox<String>();
 		cBoxDatum.addItemListener(new ItemListener() {
@@ -202,11 +250,11 @@ public class UEssensbestellung extends JInternalFrame {
 		panel_10.add(cBoxDatum);
 
 		JPanel panel_11 = new JPanel();
-		FlowLayout flowLayout_4 = (FlowLayout) panel_11.getLayout();
-		flowLayout_4.setAlignment(FlowLayout.LEFT);
 		panel_5.add(panel_11, BorderLayout.NORTH);
+		panel_11.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
 
 		JLabel lblNewLabel_6 = new JLabel("Bestellung");
+		lblNewLabel_6.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_11.add(lblNewLabel_6);
 
 		JPanel panel_7 = new JPanel();
@@ -219,7 +267,7 @@ public class UEssensbestellung extends JInternalFrame {
 		grdEssen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				rowIndexGrdEssen = grdEssen.getSelectedRow();				
+				rowIndexGrdEssen = grdEssen.getSelectedRow();
 			}
 		});
 
@@ -227,6 +275,9 @@ public class UEssensbestellung extends JInternalFrame {
 		// my Method
 		setGrdEssenHeader();
 		scrollPane_1.setViewportView(grdEssen);
+
+		JPanel panel_8 = new JPanel();
+		panel_1.add(panel_8, BorderLayout.SOUTH);
 
 		JPanel panel_2 = new JPanel();
 		getContentPane().add(panel_2, BorderLayout.SOUTH);
@@ -269,7 +320,7 @@ public class UEssensbestellung extends JInternalFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				rowIndexGrdMain = grdMain.getSelectedRow();
-				
+
 			}
 		});
 
@@ -418,5 +469,18 @@ public class UEssensbestellung extends JInternalFrame {
 		oKunde.getEssen().remove(oKunde.getEssen().get(rowIndexGrdMain));
 
 	}
-	
+
+	private void setSelectedDate() {
+		// selectedDate = datePicker.getModel().getYear() + "-" +
+		// datePicker.getModel().getMonth() + "-" + datePicker.getModel().getDay();
+		System.out.println(datePicker.getModel().getValue());
+		
+		if (datePicker.getModel().getValue() != null) {
+			Date selDate = (Date) datePicker.getModel().getValue();
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			selectedDate = df.format(selDate);
+			System.out.println("not null");
+
+		}
+	}
 }
