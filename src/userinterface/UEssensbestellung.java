@@ -75,6 +75,7 @@ public class UEssensbestellung extends JInternalFrame {
 	private TEssen oEssen = null;
 
 	private UtilDateModel model = new UtilDateModel();
+	// -> Code zeile 207
 	private Properties p = new Properties();
 
 	private JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
@@ -123,8 +124,9 @@ public class UEssensbestellung extends JInternalFrame {
 			@Override
 			public void internalFrameOpened(InternalFrameEvent e) {
 				set_cBoxKundenNr();
-				set_cBoxDatum();
+				set_cBoxDatum();				
 				setGrdEssenContent();
+				
 			}
 		});
 		this.KundenListe1 = kundenListe1;
@@ -204,29 +206,18 @@ public class UEssensbestellung extends JInternalFrame {
 		spinnerAnzahl.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
 		panel_9.add(spinnerAnzahl);
 
-		UtilDateModel model = new UtilDateModel();
-		// model.setDate(20,04,2014);
-		// Need this...
-		Properties p = new Properties();
+		// Need this...		
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
-		/*JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-		// Don't know about the formatter, but there it is...
-		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());*/
+
 		datePicker.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("action");
 				System.out.println(datePicker.getModel().getValue());
-				/*
-				if (datePicker.getModel().getValue() != null) {
-					Date selDate = (Date) datePicker.getModel().getValue();
-					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-					selectedDate = df.format(selDate);
-					System.out.println(selectedDate);
-				}
-*/
+
 				setSelectedDate();
+				setGridContent();
 
 			}
 		});
@@ -471,16 +462,12 @@ public class UEssensbestellung extends JInternalFrame {
 	}
 
 	private void setSelectedDate() {
-		// selectedDate = datePicker.getModel().getYear() + "-" +
-		// datePicker.getModel().getMonth() + "-" + datePicker.getModel().getDay();
-		System.out.println(datePicker.getModel().getValue());
-		
+		// System.out.println(datePicker.getModel().getValue());
 		if (datePicker.getModel().getValue() != null) {
 			Date selDate = (Date) datePicker.getModel().getValue();
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			selectedDate = df.format(selDate);
-			System.out.println("not null");
-
+			System.out.println(selectedDate);
 		}
 	}
 }

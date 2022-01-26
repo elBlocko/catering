@@ -44,7 +44,7 @@ public class UInfo extends JInternalFrame {
 		getContentPane().add(panel, BorderLayout.WEST);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\PC 1510\\Desktop\\workspace\\catering\\src\\appData\\img\\info.png"));
+		lblNewLabel_1.setIcon(new ImageIcon(UInfo.class.getResource("/appData/img/info.png")));
 		panel.add(lblNewLabel_1);
 		
 		JPanel panel_1 = new JPanel();
