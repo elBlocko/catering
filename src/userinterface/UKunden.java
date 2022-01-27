@@ -32,6 +32,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.Color;
+import java.awt.SystemColor;
+import javax.swing.UIManager;
 
 public class UKunden extends JInternalFrame {
 	public int i = 0;
@@ -225,6 +228,7 @@ public class UKunden extends JInternalFrame {
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 		grdMain = new JTable();
+		grdMain.setForeground(UIManager.getColor("Table.foreground"));
 		grdMain.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

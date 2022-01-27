@@ -15,6 +15,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,6 +32,9 @@ import java.util.ArrayList;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class UMain extends JFrame {
 
@@ -56,6 +61,31 @@ public class UMain extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					try {
+						UIManager.put( "control", new Color( 0, 0, 0) );
+					    UIManager.put( "Button.background", new Color(18, 30, 49) );
+					    UIManager.put( "Button.foreground", new Color( 59, 68, 75) );
+					    UIManager.put( "info", new Color(128,128,128) );
+					    UIManager.put( "nimbusBase", new Color( 18, 30, 49) );
+					    UIManager.put( "nimbusAlertYellow", new Color( 248, 187, 0) );
+					    UIManager.put( "nimbusDisabledText", new Color( 128, 128, 128) );
+					    UIManager.put( "nimbusFocus", new Color(115,164,209) );
+					    UIManager.put( "nimbusGreen", new Color(176,179,50) );
+					    UIManager.put( "nimbusInfoBlue", new Color( 66, 139, 221) );
+					    UIManager.put( "nimbusLightBackground", new Color( 18, 30, 49) );
+					    UIManager.put( "nimbusOrange", new Color(191,98,4) );
+					    UIManager.put( "nimbusRed", new Color(169,46,34) );
+					    UIManager.put( "nimbusSelectedText", new Color( 255, 255, 255) );
+					    UIManager.put( "nimbusSelectionBackground", new Color( 104, 93, 156) );
+					    UIManager.put( "text",  Color.WHITE );
+					   			    
+				        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+				        
+				    } catch(Exception e) {
+				        System.out.println("Error setting native LAF: " + e);
+				    }	
+					
+					
 					UMain frame = new UMain();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -69,9 +99,12 @@ public class UMain extends JFrame {
 	 * Create the frame.
 	 */
 	public UMain() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(UMain.class.getResource("/img/logo.png")));
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowOpened(WindowEvent e) {				
+			public void windowOpened(WindowEvent e) {
+				
+				
 				connectDatabase();
 				createLists();
 				setListContent();
@@ -103,6 +136,7 @@ public class UMain extends JFrame {
 		menuBar.add(mnStammdaten);
 
 		JMenuItem mntmEssen = new JMenuItem("Essen");
+		mntmEssen.setIcon(new ImageIcon(UMain.class.getResource("/img/dining32.png")));
 		mntmEssen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openEssenForm();
@@ -111,6 +145,7 @@ public class UMain extends JFrame {
 		});
 
 		JMenuItem mntmKunden = new JMenuItem("Kunden");
+		mntmKunden.setIcon(new ImageIcon(UMain.class.getResource("/img/contacts.png")));
 		mntmKunden.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openKundenForm();
@@ -123,6 +158,7 @@ public class UMain extends JFrame {
 		menuBar.add(mnBestellungen);
 
 		JMenuItem mntmEssensbestellungen = new JMenuItem("Essensbestellungen");
+		mntmEssensbestellungen.setIcon(new ImageIcon(UMain.class.getResource("/img/order32.png")));
 		mntmEssensbestellungen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openEssensbestellungForm();
@@ -134,6 +170,7 @@ public class UMain extends JFrame {
 		menuBar.add(mnAuswertung);
 
 		JMenuItem mntmJahr = new JMenuItem("Jahres\u00FCbersicht");
+		mntmJahr.setIcon(new ImageIcon(UMain.class.getResource("/img/timeline.png")));
 		mntmJahr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openJahrForm();
@@ -143,6 +180,7 @@ public class UMain extends JFrame {
 		mnAuswertung.add(mntmJahr);
 
 		JMenuItem mntmMonat = new JMenuItem("Monats\u00FCbersicht");
+		mntmMonat.setIcon(new ImageIcon(UMain.class.getResource("/img/view-day.png")));
 		mntmMonat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openMonatForm();
@@ -154,6 +192,7 @@ public class UMain extends JFrame {
 		menuBar.add(mnExtras);
 
 		JMenuItem mntmInformation = new JMenuItem("Information");
+		mntmInformation.setIcon(new ImageIcon(UMain.class.getResource("/img/info32.png")));
 		mntmInformation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openInfoForm();
@@ -174,6 +213,9 @@ public class UMain extends JFrame {
 		contentPane.add(toolBar, BorderLayout.NORTH);
 
 		btnKunden = new JButton("Kunden");
+		btnKunden.setIcon(new ImageIcon(UMain.class.getResource("/img/contacts48.png")));
+		btnKunden.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnKunden.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnKunden.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openKundenForm();
@@ -182,6 +224,10 @@ public class UMain extends JFrame {
 		toolBar.add(btnKunden);
 
 		btnEssen = new JButton("Essen");
+		btnEssen.setIcon(new ImageIcon(UMain.class.getResource("/img/dining48.png")));
+		btnEssen.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnEssen.setHorizontalTextPosition(SwingConstants.CENTER);
+		
 		btnEssen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openEssenForm();
@@ -189,7 +235,10 @@ public class UMain extends JFrame {
 		});
 		toolBar.add(btnEssen);
 
-		btnEssensbestellung = new JButton("Essensbestellung");
+		btnEssensbestellung = new JButton("Bestellungen");
+		btnEssensbestellung.setIcon(new ImageIcon(UMain.class.getResource("/img/order48.png")));
+		btnEssensbestellung.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnEssensbestellung.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnEssensbestellung.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openEssensbestellungForm();
@@ -198,6 +247,9 @@ public class UMain extends JFrame {
 		toolBar.add(btnEssensbestellung);
 
 		btnBeenden = new JButton("Beenden");
+		btnBeenden.setIcon(new ImageIcon(UMain.class.getResource("/img/power.png")));
+		btnBeenden.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnBeenden.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnBeenden.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
