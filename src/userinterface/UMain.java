@@ -62,7 +62,7 @@ public class UMain extends JFrame {
 			public void run() {
 				try {
 					try {
-						// WINDOW/PREFERENCES/WINDOW BUILDER/LOOK AND FEEL/ 
+						// WINDOW/PREFERENCES/WINDOW BUILDER/Swing/LOOK AND FEEL/ 
 						// haken setzten bei use code in MAIN[]
 						UIManager.put( "control", new Color( 0, 0, 0) );
 					    UIManager.put( "Button.background", new Color(18, 30, 49) );
