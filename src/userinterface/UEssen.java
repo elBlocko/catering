@@ -288,7 +288,7 @@ public class UEssen extends JInternalFrame {
 			String tempBezeichnung = tfBezeichnung.getText().trim();
 			String tempKategorie = tfKategorie.getText().trim();
 			try {
-				tempPreis = Float.parseFloat(tfPreis.getText().trim());
+				tempPreis = Float.parseFloat(tfPreis.getText().trim().replace(",", "."));
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Preis darf nur Zahlen mit Nachkommastellen enthalten");
 			}

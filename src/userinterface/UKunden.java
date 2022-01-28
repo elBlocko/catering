@@ -289,11 +289,11 @@ public class UKunden extends JInternalFrame {
 				break;
 			}
 			case 1: {
-				System.exit(0); // No option
+				
 				break;
 			}
 			case 2: {
-				System.exit(0); // Cancel option
+				
 				break;
 			}
 			}
@@ -319,11 +319,11 @@ public class UKunden extends JInternalFrame {
 				break;
 			}
 			case 1: {
-				System.exit(0); // No option
+				
 				break;
 			}
 			case 2: {
-				System.exit(0); // Cancel option
+				
 				break;
 			}
 			}
@@ -340,7 +340,7 @@ public class UKunden extends JInternalFrame {
 			}
 
 			if (tfFirma1.getText().length() >= 100 || tfFirma2.getText().length() >= 100
-					|| tfOrt.getText().length() >= 100 || tfPLZ.getText().length() >= 5
+					|| tfOrt.getText().length() >= 100 || tfPLZ.getText().length() > 5
 					|| tfStrasse.getText().length() >= 100) {
 				JOptionPane.showMessageDialog(null, "Die Länge der maximalen Eingabe wurde überschritten");
 				return;

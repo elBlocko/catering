@@ -59,6 +59,23 @@ public class TEssensListeLokal extends TEssensListeBasis {
 		return jbw;
 	}
 	
-		
+	public double getGesamtBrutto(int ID) {
+		double jbw = 0;
+		try {
+			Statement stmt = TDatabase.connection.createStatement();
+
+			ResultSet rs = stmt.executeQuery(
+					"SELECT SUM(tblEssen.preis*tblKundenEssen.anzahl) AS Brutto FROM tblKundenEssen LEFT JOIN tblEssen ON tblEssen.EssenNr = tblKundenEssen.ENr \r\n"
+							+ "WHERE tblKundenEssen.KuNr = " + ID );
+			jbw = rs.getDouble("Brutto");
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null,
+					"Fehler beim Berechnen des Brutto Gesamt Preises aller Essen eines Kunden");
+
+		}
+		return jbw;
+	}	
 
 }
