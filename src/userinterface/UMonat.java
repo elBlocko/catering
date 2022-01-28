@@ -143,8 +143,10 @@ public class UMonat extends JInternalFrame {
 		cBoxKundenNr.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				selectedKuNr = Integer.parseInt(cBoxKundenNr.getSelectedItem().toString());
+				lblAusgabe.setText("0,00 €");
 				getSelectedKunde();
 				setLabelFirma12();
+				setGridContent();
 			}
 		});
 		panel_8.add(cBoxKundenNr);
@@ -238,8 +240,8 @@ public class UMonat extends JInternalFrame {
 
 					modelList.addRow(rowList);
 				}
-				double GesamtPreis = oKunde.getEssen().getJahresBrutto(selectedKuNr, Year);
-				lblAusgabe.setText(String.valueOf(GesamtPreis));
+				double GesamtPreis = oKunde.getEssen().getGesamtBrutto(selectedKuNr);
+				lblAusgabe.setText(String.valueOf(String.format("%.2f", GesamtPreis) + " €"));
 			}
 		}
 
